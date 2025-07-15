@@ -13,7 +13,7 @@ interface BlogDetailPageProps {
 // ✅ Pre-generate blog pages
 export async function generateStaticParams() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API}/blogs`, {
-    next: { revalidate: 60 },
+    next: { revalidate: 600 },
   });
 
   const { data } = await res.json();
