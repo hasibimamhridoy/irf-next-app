@@ -1,14 +1,26 @@
 import { BlogDetailContent } from "@/components/blog-detail-content";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
-import { RelatedPosts } from "@/components/related-posts";
-import { getBlogPostById, getRelatedPosts } from "@/lib/blog-data";
+import { getBlogPostById } from "@/lib/blog-data";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 // You are intentionally treating params as a promise
 interface BlogDetailPageProps {
   params: Promise<{ id: string }>;
+}
+
+// ✅ Pre-generate blog pages
+export async function generateStaticParams() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API}/blogs`, {
+    next: { revalidate: 60 },
+  });
+
+  const { data } = await res.json();
+
+  return data.map((post: any) => ({
+    id: post.slug, // slug should match [id] in URL
+  }));
 }
 
 // ✅ Page component
@@ -18,13 +30,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const post = await getBlogPostById(id);
   if (!post) notFound();
 
-  const relatedPosts = await getRelatedPosts(post.id, post.category, 3);
+  console.log("post", post);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
       <Header />
       <BlogDetailContent post={post} />
-      {relatedPosts.length > 0 && <RelatedPosts posts={relatedPosts} />}
       <Footer />
     </div>
   );
@@ -45,7 +56,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.title} | শোলো ব্লগ`,
-    description: post.excerpt,
+    title: `${post.title} | IRF`,
+    description: post.title,
   };
 }

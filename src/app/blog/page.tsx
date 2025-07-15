@@ -2,10 +2,19 @@ import { BlogGrid } from "@/components/blog-grid";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { getBlogPosts } from "@/lib/blog-data";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "ব্লগ | আই আর এফ",
+  description:
+    "আই আর এফ একটি ইসলামী ব্লগ সাইট ও তরুণ-তরুণীদের জন্য প্রকাশিত হয়। আমাদের লক্ষ্য হলো নতুন প্রজন্মকে ইসলামী মূল্যবোধে দীক্ষিত করে সমাজের দায়িত্বশীল সদস্য হিসেবে গড়ে তোলা।",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_CLIENT_BASE || "https://irf.org"
+  ),
+};
 
 export default async function BlogPage() {
-  // Server-side data fetching - start with only 3 posts to show load more
-  const { posts, hasMore, total } = await getBlogPosts(1, 3); // Start with page 1, 3 posts
+  const { posts, hasMore, total } = await getBlogPosts(1); // Start with page 1, 3 posts
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">

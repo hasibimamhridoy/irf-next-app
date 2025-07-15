@@ -1,9 +1,10 @@
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import type { BlogPost } from "@/lib/blog-data";
-import { Calendar, Clock, User } from "lucide-react";
+import type { BlogPost, Category } from "@/lib/blog-data";
+import { formatDate } from "@/lib/utils";
+import { Calendar } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Badge } from "./ui/badge";
 
 interface BlogCardProps {
   post: BlogPost;
@@ -11,28 +12,39 @@ interface BlogCardProps {
 
 export function BlogCard({ post }: BlogCardProps) {
   return (
-    <Link href={`/blog/${post.id}`}>
+    <Link href={`/blog/${post.slug}`}>
       <Card className="overflow-hidden hover:shadow-2xl transition-all duration-300 group border-0 shadow-lg bg-white cursor-pointer h-full">
         {/* Image Section */}
         <div className="aspect-video relative overflow-hidden">
-          <Image
-            src={post.image || "/placeholder.svg"}
-            alt={post.title}
-            fill
-            className="object-cover group-hover:scale-110 transition-transform duration-500"
-          />
+          {post?.thumbnail?.url ? (
+            <Image
+              src={`${process.env.NEXT_PUBLIC_BASE}${post?.thumbnail?.url}`}
+              alt={post.title}
+              fill
+              className="object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+          ) : (
+            <Image
+              src={"/logo.png"}
+              alt={post.title}
+              fill
+              className="object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+          )}
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           {/* Category Badge */}
-          <Badge className="absolute top-4 left-4 bg-destructive text-white shadow-lg">
-            {post.category}
-          </Badge>
-
-          {/* Read Time */}
-          <div className="absolute top-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded-full flex items-center">
-            <Clock className="w-3 h-3 mr-1" />
-            {post.readTime}
-          </div>
+          {post.categories.map((cat: Category) => {
+            return (
+              <Badge
+                key={cat.id}
+                className="absolute top-4 left-4 bg-destructive text-white shadow-lg"
+              >
+                {cat.name}
+              </Badge>
+            );
+          })}
         </div>
 
         {/* Content Section */}
@@ -42,21 +54,12 @@ export function BlogCard({ post }: BlogCardProps) {
             {post.title}
           </h3>
 
-          {/* Excerpt */}
-          <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed flex-1">
-            {post.excerpt}
-          </p>
-
           {/* Meta Information */}
           <div className="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100">
             <div className="flex items-center space-x-3">
               <div className="flex items-center">
-                <User className="w-3 h-3 mr-1" />
-                <span>{post.author}</span>
-              </div>
-              <div className="flex items-center">
                 <Calendar className="w-3 h-3 mr-1" />
-                <span>{post.date}</span>
+                <span>{formatDate((post as any).createdAt)}</span>
               </div>
             </div>
 

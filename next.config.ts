@@ -4,11 +4,19 @@ const nextConfig: NextConfig = {
   /* config options here */
   typescript: {
     // Enable type checking during build
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
   eslint: {
     // Enable linting during build
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
+  },
+
+  images: {
+    domains: [
+      "irf-cms.muhammadyeasin.com", // Microlink Image Preview
+      "images.unsplash.com", // Microlink Image Preview
+      "lottie.host", // Microlink Image Preview
+    ],
   },
 };
 

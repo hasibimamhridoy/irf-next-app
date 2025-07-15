@@ -3,6 +3,16 @@ import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Download, Headphones, Video } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "লাইব্রেরী | আই আর এফ",
+  description:
+    "আই আর এফ একটি ইসলামী ব্লগ সাইট ও তরুণ-তরুণীদের জন্য প্রকাশিত হয়। আমাদের লক্ষ্য হলো নতুন প্রজন্মকে ইসলামী মূল্যবোধে দীক্ষিত করে সমাজের দায়িত্বশীল সদস্য হিসেবে গড়ে তোলা।",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_CLIENT_BASE || "https://irf.org"
+  ),
+};
 
 export default function LibraryPage() {
   const resources = [
