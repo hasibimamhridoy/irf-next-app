@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 export default async function BlogPage() {
   const { posts, hasMore, total } = await getBlogPosts(1); // Start with page 1, 3 posts
 
+  console.log(posts);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
       <Header />

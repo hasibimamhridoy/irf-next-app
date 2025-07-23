@@ -1,4 +1,3 @@
-import { CategoryGrid } from "@/components/category-grid";
 import { CreativeHero } from "@/components/creative-hero";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
@@ -22,7 +21,7 @@ export default async function HomePage() {
       <Header />
       <CreativeHero />
       <LatestPosts posts={posts} totalPosts={total} />
-      <CategoryGrid />
+      {/* <CategoryGrid /> */}
       <StatsSection />
       <Footer />
     </div>

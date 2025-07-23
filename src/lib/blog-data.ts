@@ -37,13 +37,14 @@ export interface Meta {
 // Get all blog
 export async function getBlogPosts(
   page = 1,
-  limit = 6
+  limit = 6,
+  search: string = ""
 ): Promise<{ posts: BlogPost[]; hasMore: boolean; total: number }> {
   const startIndex = (page - 1) * limit;
   const endIndex = startIndex + limit;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_API}/blogs/?pagination[page]=${page}&pagination[pageSize]=${limit}&populate[categories][fields]=name,slug&populate[thumbnail][fields]=url`,
+    `${process.env.NEXT_PUBLIC_SERVER_API}/blogs/?pagination[page]=${page}&pagination[pageSize]=${limit}&populate[categories][fields]=name,slug&populate[thumbnail][fields]=url&filters[$or][0][title][$containsi]=${search}`,
     {
       next: { revalidate: 600 }, // Revalidate every 600 seconds,
       cache: "force-cache",
